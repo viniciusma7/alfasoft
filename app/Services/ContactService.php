@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Contact;
@@ -10,18 +11,20 @@ class ContactService
         return Contact::all();
     }
 
-    public function create(array $data)
+    public function create(array $data): Contact
     {
         return Contact::create($data);
     }
 
-    public function update(Contact $contact, array $data)
+    public function update(Contact $contact, array $data): Contact
     {
-        return $contact->update($data);
+        $contact->update($data);
+
+        return $contact;
     }
 
-    public function delete(Contact $contact)
+    public function delete(Contact $contact): void
     {
-        return $contact->delete();
+        $contact->delete();
     }
 }

@@ -9,12 +9,9 @@ use App\Services\ContactService;
 
 class ContactController extends Controller
 {
-    protected $service;
-
-    public function __construct(ContactService $service)
-    {
-        $this->service = $service;
-    }
+    public function __construct(
+        protected ContactService $service,
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -39,7 +36,7 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request)
     {
-        $contact = $this->service->create($request->all());
+        $contact = $this->service->create($request->validated());
 
         return redirect()->route('contacts.edit', $contact);
     }
@@ -65,7 +62,7 @@ class ContactController extends Controller
      */
     public function update(UpdateContactRequest $request, Contact $contact)
     {
-        $this->service->update($contact, $request->all());
+        $this->service->update($contact, $request->validated());
 
         return redirect()->route('contacts.edit', $contact);
     }
