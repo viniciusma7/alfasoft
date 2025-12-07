@@ -36,9 +36,18 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request)
     {
-        $contact = $this->service->create($request->validated());
+        try {
+            $contact = $this->service->create($request->validated());
 
-        return redirect()->route('contacts.edit', $contact);
+            return redirect()
+                ->route('contacts.edit', $contact)
+                ->with('success', 'Contact created successfully!');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Unable to create contact now, please try again later.');
+        }
     }
 
     /**
@@ -62,9 +71,18 @@ class ContactController extends Controller
      */
     public function update(UpdateContactRequest $request, Contact $contact)
     {
-        $this->service->update($contact, $request->validated());
+        try {
+            $this->service->update($contact, $request->validated());
 
-        return redirect()->route('contacts.edit', $contact);
+            return redirect()
+                ->route('contacts.edit', $contact)
+                ->with('success', 'Contact updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Unable to update contact now, please try again later.');
+        }
     }
 
     /**
@@ -72,8 +90,16 @@ class ContactController extends Controller
      */
     public function destroy(Contact $contact)
     {
-        $this->service->delete($contact);
+        try {
+            $this->service->delete($contact);
 
-        return redirect()->route('contacts.index');
+            return redirect()
+                ->route('contacts.index')
+                ->with('success', 'Contact deleted successfully!');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->with('error', 'Unable to delete contact now, please try again later.');
+        }
     }
 }

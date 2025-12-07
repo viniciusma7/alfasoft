@@ -9,6 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <x-message-session/>
                     <div class="flex items-center justify-between mb-6">
                         <h1 class="text-2xl font-bold">Contacts</h1>
                         <a href="{{ route('contacts.create') }}" class="inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">Create Contact</a>
