@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
 use App\Models\Contact;
-use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
@@ -24,7 +23,7 @@ class ContactController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.contacts.create');
     }
 
     /**
@@ -32,7 +31,12 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request)
     {
-        //
+        $data = $request->all();
+        $data['user_id'] = auth()->id();
+
+        $contact = Contact::create($data);
+
+        return redirect()->route('contacts.edit', $contact);
     }
 
     /**
