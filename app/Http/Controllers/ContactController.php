@@ -13,7 +13,7 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $contacts = Contact::all()->where('user_id', auth()->id());
+        $contacts = Contact::all();
 
         return view('pages.contacts.index', compact('contacts'));
     }
@@ -31,10 +31,7 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request)
     {
-        $data = $request->all();
-        $data['user_id'] = auth()->id();
-
-        $contact = Contact::create($data);
+        $contact = Contact::create($request->all());
 
         return redirect()->route('contacts.edit', $contact);
     }

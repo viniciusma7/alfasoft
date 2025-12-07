@@ -29,8 +29,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('contacts', [ContactController::class, 'index'])->name('contacts.index');
+
 Route::middleware('auth')->group(function () {
-    Route::resource('contacts', ContactController::class);
+    Route::resource('contacts', ContactController::class)->except(['index']);
 });
 
 require __DIR__.'/auth.php';
