@@ -30,7 +30,13 @@
                                         <td class="border px-4 py-2">{{ $contact->email }}</td>
                                         <td class="border px-4 py-2">{{ $contact->number }}</td>
                                         <td>
-                                            Edit | Delete
+                                            <a href="{{ route('contacts.show', $contact) }}">Show</a> |
+                                            <a href="{{ route('contacts.edit', $contact) }}">Edit</a> |
+                                            <form action="{{ route('contacts.destroy', $contact) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-500">Delete Contact</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
