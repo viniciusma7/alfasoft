@@ -31,6 +31,8 @@ Route::get('contacts', [ContactController::class, 'index'])->name('contacts.inde
 
 Route::middleware('auth')->group(function () {
     Route::resource('contacts', ContactController::class)->except(['index']);
+    Route::post('contacts/{contact}/restore', [ContactController::class, 'restore'])->name('contacts.restore');
+    Route::delete('contacts/{contact}/force-delete', [ContactController::class, 'forceDelete'])->name('contacts.force-delete');
 });
 
 require __DIR__.'/auth.php';

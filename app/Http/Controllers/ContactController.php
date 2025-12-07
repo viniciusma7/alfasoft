@@ -6,6 +6,7 @@ use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
 use App\Models\Contact;
 use App\Services\ContactService;
+use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
@@ -16,9 +17,9 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $contacts = $this->service->all();
+        $contacts = $this->service->all($request->has('trashed'));
 
         return view('pages.contacts.index', compact('contacts'));
     }
@@ -100,6 +101,36 @@ class ContactController extends Controller
             return redirect()
                 ->back()
                 ->with('error', 'Unable to delete contact now, please try again later.');
+        }
+    }
+
+    public function restore(int $idContact)
+    {
+        try {
+            $this->service->restore($idContact);
+
+            return redirect()
+                ->route('contacts.index')
+                ->with('success', 'Contact restored successfully!');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->with('error', 'Unable to restore contact now, please try again later.');
+        }
+    }
+
+    public function forceDelete(int $idContact)
+    {
+        try {
+            $this->service->forceDelete($idContact);
+
+            return redirect()
+                ->route('contacts.index', ['trashed' => true])
+                ->with('success', 'Contact permanently deleted successfully!');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->with('error', 'Unable to permanently delete contact now, please try again later.');
         }
     }
 }
