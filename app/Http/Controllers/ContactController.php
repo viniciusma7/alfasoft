@@ -52,7 +52,7 @@ class ContactController extends Controller
      */
     public function edit(Contact $contact)
     {
-        //
+        return view('pages.contacts.edit', compact('contact'));
     }
 
     /**
@@ -60,7 +60,9 @@ class ContactController extends Controller
      */
     public function update(UpdateContactRequest $request, Contact $contact)
     {
-        //
+        $contact->update($request->all());
+
+        return redirect()->route('contacts.edit', $contact);
     }
 
     /**
