@@ -5,15 +5,23 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
 use App\Models\Contact;
+use App\Services\ContactService;
 
 class ContactController extends Controller
 {
+    protected $service;
+
+    public function __construct(ContactService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $contacts = Contact::all();
+        $contacts = $this->service->all();
 
         return view('pages.contacts.index', compact('contacts'));
     }
@@ -31,7 +39,7 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request)
     {
-        $contact = Contact::create($request->all());
+        $contact = $this->service->create($request->all());
 
         return redirect()->route('contacts.edit', $contact);
     }
@@ -57,7 +65,7 @@ class ContactController extends Controller
      */
     public function update(UpdateContactRequest $request, Contact $contact)
     {
-        $contact->update($request->all());
+        $this->service->update($contact, $request->all());
 
         return redirect()->route('contacts.edit', $contact);
     }
@@ -67,7 +75,7 @@ class ContactController extends Controller
      */
     public function destroy(Contact $contact)
     {
-        $contact->delete();
+        $this->service->delete($contact);
 
         return redirect()->route('contacts.index');
     }
